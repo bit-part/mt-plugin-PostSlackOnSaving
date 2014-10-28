@@ -1,0 +1,39 @@
+<mtapp:setting
+    id="slack_api_url"
+    label="<__trans phrase="Slack API URL"> (<__trans phrase="Required">)"
+    hint="<__trans phrase="Type the url of Slack API">"
+    show_hint="1">
+    <input type="text" name="slack_api_url" id="slack_api_url" value="<mt:var name="slack_api_url" escape="html">" />
+</mtapp:setting>
+
+<mtapp:setting
+    id="slack_token"
+    label="<__trans phrase="Token"> (<__trans phrase="Required">)"
+    hint="<__trans phrase="Authentication token">"
+    show_hint="1">
+    <input type="text" name="slack_token" id="slack_token" value="<mt:var name="slack_token" escape="html">" />
+</mtapp:setting>
+
+<mtapp:setting
+    id="slack_channel"
+    label="<__trans phrase="Channel"> (<__trans phrase="Required">)"
+    hint="<__trans phrase="Channel to send message to. Can be a public channel, private group or IM channel. Can be an encoded ID, or a name.">"
+    show_hint="1">
+    <input type="text" name="slack_channel" id="slack_channel" value="<mt:var name="slack_channel" escape="html">" />
+</mtapp:setting>
+
+<mtapp:setting
+    id="slack_user_name"
+    label="<__trans phrase="User name">"
+    hint="<__trans phrase="Name of bot.">"
+    show_hint="1">
+    <input type="text" name="slack_user_name" id="slack_user_name" value="<mt:var name="slack_user_name" escape="html">" />
+</mtapp:setting>
+
+<mtapp:setting
+    id="slack_icon_url"
+    label="<__trans phrase="Icon URL">"
+    hint="<__trans phrase="URL to an image to use as the icon for this message">"
+    show_hint="1">
+    <input type="text" name="slack_icon_url" id="slack_icon_url" value="<mt:var name="slack_icon_url" escape="html">" />
+</mtapp:setting>

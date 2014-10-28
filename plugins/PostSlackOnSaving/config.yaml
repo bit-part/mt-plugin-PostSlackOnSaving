@@ -1,0 +1,32 @@
+id: PostSlackOnSaving
+name: PostSlackOnSaving
+version: 0.0.1
+description: <__trans phrase='Post a message to Slack when an author data is updated.'>
+doc_link: https://github.com/bit-part/mt-plugin-PostSlackOnSaving/blob/master/README.md
+author_name: <__trans phrase='bit part LLC'>
+author_link: http://bit-part.net/
+l10n_class: PostSlackOnSaving::L10N
+config_template: config_template.tmpl
+# blog_config_template: blog_config_template.tmpl
+# system_config_template: system_config_template.tmpl
+settings:
+    slack_api_url:
+        default: https://slack.com/api/
+    slack_token:
+        default:
+    slack_channel:
+        default:
+    slack_user_name:
+        default: Movable Type
+    slack_icon_url:
+        default:
+callbacks:
+    #----- Hook
+    MT::Author::post_save:
+        - handler: $PostSlackOnSaving::PostSlackOnSaving::Plugin::hdlr_cms_post_save_author
+          priority: 10
+    # ==== For document.bit-part.net [start] ==== #
+    cms_post_save.author:
+        - handler: $PostSlackOnSaving::PostSlackOnSaving::Plugin::hdlr_cms_post_save_author
+          priority: 10
+    # ==== For document.bit-part.net [ end ] ==== #
