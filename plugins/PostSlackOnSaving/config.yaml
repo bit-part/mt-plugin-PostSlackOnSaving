@@ -3,6 +3,7 @@ name: PostSlackOnSaving
 version: 0.0.1
 description: <__trans phrase='Post a message to Slack when an author data is updated.'>
 doc_link: https://github.com/bit-part/mt-plugin-PostSlackOnSaving/blob/master/README.md
+plugin_link: https://github.com/bit-part/mt-plugin-PostSlackOnSaving/
 author_name: <__trans phrase='bit part LLC'>
 author_link: http://bit-part.net/
 l10n_class: PostSlackOnSaving::L10N
