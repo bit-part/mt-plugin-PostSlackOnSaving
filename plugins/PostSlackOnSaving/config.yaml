@@ -26,8 +26,3 @@ callbacks:
     MT::Author::post_save:
         - handler: $PostSlackOnSaving::PostSlackOnSaving::Plugin::hdlr_cms_post_save_author
           priority: 10
-    # ==== For document.bit-part.net [start] ==== #
-    cms_post_save.author:
-        - handler: $PostSlackOnSaving::PostSlackOnSaving::Plugin::hdlr_cms_post_save_author
-          priority: 10
-    # ==== For document.bit-part.net [ end ] ==== #
