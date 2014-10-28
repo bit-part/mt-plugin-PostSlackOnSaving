@@ -38,14 +38,15 @@ sub chat_post_message {
 #----- Hook
 sub hdlr_author_post_save {
     my ($cb, $obj, $original) = @_;
+
     # Check the timing saved
     my $changed = keys %{$obj->{changed_cols}};
-    if (defined $obj->{__meta}->{__objects}->{favorite_blogs}) {
+    if ($obj->meta->{favorite_websites}) {
         return 1;
     }
     elsif ($changed > 0) {
         # when an email was confirmed
-        unless ($changed == 2 and ($obj->{changed_cols}->{preferred_language} and $obj->{changed_cols}->{status})) {
+        unless ($obj->created_on eq $obj->modified_on) {
             return 1;
         }
     }
