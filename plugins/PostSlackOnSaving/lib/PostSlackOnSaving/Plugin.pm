@@ -71,7 +71,7 @@ sub hdlr_cms_post_save_author {
 
     my (@message_text_body, %message_obj);
 
-    push @message_text_body, 'Posted by ' . $cb_method;
+    # push @message_text_body, 'Posted by ' . $cb_method;
     push @message_text_body, MT->translate('A User have been updated.');
 
     $message_obj{name} = $obj->name || 'anonymous';
