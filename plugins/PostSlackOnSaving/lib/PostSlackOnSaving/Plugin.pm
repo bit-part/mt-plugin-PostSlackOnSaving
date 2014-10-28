@@ -72,12 +72,12 @@ sub hdlr_cms_post_save_author {
 
     $message_obj{name} = $obj->name || 'anonymous';
     $message_obj{status} = $author_status{ $obj->status } || 'Undefined';
-    $message_obj{created_on} = $obj->created_on;
-    if ($message_obj{created_on}) {
-        $message_obj{created_on} =~ s/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/$1-$2-$3 $4:$5:$6/
+    $message_obj{modified_on} = $obj->modified_on;
+    if ($message_obj{modified_on}) {
+        $message_obj{modified_on} =~ s/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/$1-$2-$3 $4:$5:$6/
     }
 
-    push @message_text_body, $message_obj{name} . ' (' . $message_obj{status} . ') at ' . $message_obj{created_on}; # authorname (status) at
+    push @message_text_body, $message_obj{name} . ' (' . $message_obj{status} . ') at ' . $message_obj{modified_on}; # authorname (status) at
 
     # ==== For document.bit-part.net [start] ==== #
     if ($class eq 'MT::App::CMS') {
