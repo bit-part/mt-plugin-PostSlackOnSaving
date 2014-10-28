@@ -36,14 +36,16 @@ sub chat_post_message {
 }
 
 #----- Hook
-sub hdlr_cms_post_save_author {
-    my ($cb, $app, $obj) = @_;
-
+sub hdlr_author_post_save {
+    my ($cb, $obj, $original) = @_;
     # Check the timing saved
-    my $class = ref $app;
     my $changed = keys %{$obj->{changed_cols}};
-    if ($class eq 'MT::Author') {
-        if (defined $obj->{__meta}->{__objects}->{favorite_blogs} or $changed == 0) {
+    if (defined $obj->{__meta}->{__objects}->{favorite_blogs}) {
+        return 1;
+    }
+    elsif ($changed > 0) {
+        # when an email was confirmed
+        unless ($changed == 2 and ($obj->{changed_cols}->{preferred_language} and $obj->{changed_cols}->{status})) {
             return 1;
         }
     }
@@ -52,11 +54,6 @@ sub hdlr_cms_post_save_author {
     my $scope = 'system';
     my $config = &plugin->get_config_hash($scope);
     return 1 unless ($config->{'slack_api_url'} or $config->{'slack_token'} or $config->{'slack_channel'});
-
-
-    # Movable Type Information
-    my $cb_method = $cb->method;
-    $cb_method =~ s/::post_save//;
 
     # Set author status
     my %author_status = (
@@ -67,7 +64,6 @@ sub hdlr_cms_post_save_author {
 
     my (@message_text_body, %message_obj);
 
-    # push @message_text_body, 'Posted by ' . $cb_method;
     push @message_text_body, MT->translate('A User have been updated.');
 
     $message_obj{name} = $obj->name || 'anonymous';
@@ -80,18 +76,17 @@ sub hdlr_cms_post_save_author {
     push @message_text_body, $message_obj{name} . ' (' . $message_obj{status} . ') at ' . $message_obj{modified_on}; # authorname (status) at
 
     # ==== For document.bit-part.net [start] ==== #
-    if ($class eq 'MT::App::CMS') {
-        my $author_meta = get_meta($obj);
-        if (defined $author_meta->{authorexpiredate}) {
-            $message_obj{authorexpiredate} = $author_meta->{authorexpiredate};
-            $message_obj{authorexpiredate} =~ s/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/$1-$2-$3/;
-            $message_obj{authorexpiredate} = '"Expire Date" is ' . $message_obj{authorexpiredate};
-        }
-        else {
-            $message_obj{authorexpiredate} = 'Please set the "Expire Date".';
-        }
-        push @message_text_body, $message_obj{authorexpiredate};
+    my $author_meta = get_meta($obj);
+    if (defined $author_meta->{authorexpiredate}) {
+        $message_obj{authorexpiredate} = $author_meta->{authorexpiredate};
+        $message_obj{authorexpiredate} =~ s/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/$1-$2-$3/;
+        $message_obj{authorexpiredate} =~ s/ 00:00:00//;
+        $message_obj{authorexpiredate} = '"Expire Date" is ' . $message_obj{authorexpiredate};
     }
+    else {
+        $message_obj{authorexpiredate} = 'Please set the "Expire Date".';
+    }
+    push @message_text_body, $message_obj{authorexpiredate};
     # ==== For document.bit-part.net [ end ] ==== #
 
 

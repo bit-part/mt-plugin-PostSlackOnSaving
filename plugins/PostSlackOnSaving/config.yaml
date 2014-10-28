@@ -24,5 +24,5 @@ settings:
 callbacks:
     #----- Hook
     MT::Author::post_save:
-        - handler: $PostSlackOnSaving::PostSlackOnSaving::Plugin::hdlr_cms_post_save_author
+        - handler: $PostSlackOnSaving::PostSlackOnSaving::Plugin::hdlr_author_post_save
           priority: 10
