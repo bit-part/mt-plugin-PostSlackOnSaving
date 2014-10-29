@@ -21,6 +21,8 @@ settings:
         default: Movable Type
     slack_icon_url:
         default:
+    slack_post_log:
+        default: 0
 callbacks:
     #----- Hook
     MT::Author::post_save:

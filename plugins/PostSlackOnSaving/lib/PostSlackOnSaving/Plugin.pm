@@ -6,7 +6,7 @@ use LWP::UserAgent;
 use HTTP::Request::Common;
 use MT::Author;
 use CustomFields::Util qw( get_meta );
-
+use MT::Log;
 sub plugin {
     return MT->component('PostSlackOnSaving');
 }
@@ -16,7 +16,6 @@ sub _log {
     return unless defined($msg);
     my $prefix = sprintf "%s:%s:%s: %s", caller();
     $msg = $prefix . $msg if $prefix;
-    use MT::Log;
     my $log = MT::Log->new;
     $log->message($msg) ;
     $log->save or die $log->errstr;
@@ -99,7 +98,14 @@ sub hdlr_author_post_save {
     $postdata{text} = join "\n", @message_text_body;
 
     my $url = $config->{'slack_api_url'} . 'chat.postMessage?token=' . $config->{'slack_token'};
-    chat_post_message($url, \%postdata);
+    my $res = chat_post_message($url, \%postdata);
+
+    if ($config->{'slack_post_log'}) {
+        MT->log({
+            message => 'Slack Response',
+            metadata => $res,
+        });
+    }
 
     1;
 }

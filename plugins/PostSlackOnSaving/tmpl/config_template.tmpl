@@ -37,3 +37,14 @@
     show_hint="1">
     <input type="text" name="slack_icon_url" id="slack_icon_url" value="<mt:var name="slack_icon_url" escape="html">" />
 </mtapp:setting>
+
+<mtapp:setting
+    id="slack_post_log"
+    label="<__trans phrase="Response">">
+    <ul>
+        <li><input type="radio" name="slack_post_log" id="slack_post_log_1" value="0"<mt:unless name="slack_post_log"> checked="checked"</mt:unless>> <__trans phrase="Nothing to do"></li>
+        <li><input type="radio" name="slack_post_log" id="slack_post_log_1" value="1"<mt:if name="slack_post_log_1"> checked="checked"</mt:if>> <__trans phrase="Save the response to system log."></li>
+        <li></li>
+    </ul>
+
+</mtapp:setting>

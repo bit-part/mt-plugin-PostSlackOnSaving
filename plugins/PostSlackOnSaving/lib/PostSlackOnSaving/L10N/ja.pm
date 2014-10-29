@@ -20,6 +20,9 @@ use vars qw( %Lexicon );
     'Channel' => 'チャンネル',
     'User name' => '投稿者名',
     'Icon URL' => 'アイコンURL',
+    'Response' => 'レスポンス',
+    'Nothing to do' => '何もしない',
+    'Save the response to system log.' => 'システムログに保存する',
 );
 
 1;
