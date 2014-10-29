@@ -28,3 +28,6 @@ callbacks:
     MT::Author::post_save:
         - handler: $PostSlackOnSaving::PostSlackOnSaving::Plugin::hdlr_author_post_save
           priority: 10
+    cms_post_save.author:
+        - handler: $PostSlackOnSaving::PostSlackOnSaving::Plugin::hdlr_author_post_save
+          priority: 10

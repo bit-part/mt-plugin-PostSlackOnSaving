@@ -5,8 +5,9 @@ use warnings;
 use LWP::UserAgent;
 use HTTP::Request::Common;
 use MT::Author;
-use CustomFields::Util qw( get_meta );
 use MT::Log;
+use CustomFields::Util qw( get_meta );
+
 sub plugin {
     return MT->component('PostSlackOnSaving');
 }
@@ -36,18 +37,22 @@ sub chat_post_message {
 
 #----- Hook
 sub hdlr_author_post_save {
-    my ($cb, $obj, $original) = @_;
+    my $cb = shift;
+    my ($app, $obj, $original);
+
+    if ($cb->method eq 'MT::Author::post_save') {
+        ($obj, $original) = @_;
+    }
+    elsif ($cb->method eq 'cms_post_save.author') {
+        ($app, $obj, $original) = @_;
+    }
 
     # Check the timing saved
-    my $changed = keys %{$obj->{changed_cols}};
-    if ($obj->meta->{favorite_websites}) {
-        return 1;
-    }
-    elsif ($changed > 0) {
-        # when an email was confirmed
-        unless ($obj->created_on eq $obj->modified_on) {
-            return 1;
-        }
+    if (!defined $app) {
+        my $changed = keys %{$obj->{changed_cols}};
+        return 1 if ($obj->created_on ne $obj->modified_on);
+        return 1 if ($obj->meta->{favorite_websites});
+        return 1 if (keys %{$obj->{changed_cols}} == 0);
     }
 
     # Get plugin settings
